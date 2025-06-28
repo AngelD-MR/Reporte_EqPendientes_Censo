@@ -13,24 +13,25 @@ df = load_data()
 
 # Normalizar nombres de columnas (elimina espacios, baja a minúsculas, reemplaza tildes)
 df["Serie"] = df["Serie"].astype(str).str.strip()
-df.columns = df.columns.str.strip().str.lower().str.replace(" ", "").str.replace("-", "")
+
+
 # Filtros desde la barra lateral
 st.sidebar.header("🔍 Filtros")
-subregiones = st.sidebar.multiselect("Sub-Región", df["sub_región"].unique())
-locaciones = st.sidebar.multiselect("Locación Comercial", df["locación_comercial"].unique())
-mesas = st.sidebar.multiselect("Mesa Comercial", df["mesa_comercial"].unique())
-rutas = st.sidebar.multiselect("Ruta", df["ruta"].unique())
+subregiones = st.sidebar.multiselect("Sub-Región", df["Sub-Región"].unique())
+locaciones = st.sidebar.multiselect("Locación Comercial", df["Locación Comercial"].unique())
+mesas = st.sidebar.multiselect("Mesa Comercial", df["Mesa Comercial"].unique())
+rutas = st.sidebar.multiselect("Ruta", df["Ruta"].unique())
 
 # Aplicar filtros
 df_filtrado = df.copy()
 if subregiones:
-    df_filtrado = df_filtrado[df_filtrado["sub_región"].isin(subregiones)]
+    df_filtrado = df_filtrado[df_filtrado["Sub-Región"].isin(subregiones)]
 if locaciones:
-    df_filtrado = df_filtrado[df_filtrado["locación_comercial"].isin(locaciones)]
+    df_filtrado = df_filtrado[df_filtrado["Locación Comercial"].isin(locaciones)]
 if mesas:
-    df_filtrado = df_filtrado[df_filtrado["mesa_comercial"].isin(mesas)]
+    df_filtrado = df_filtrado[df_filtrado["Mesa Comercial"].isin(mesas)]
 if rutas:
-    df_filtrado = df_filtrado[df_filtrado["ruta"].isin(rutas)]
+    df_filtrado = df_filtrado[df_filtrado["Ruta"].isin(rutas)]
 
 # Mostrar resultados
 st.markdown("### Resultados Filtrados")
