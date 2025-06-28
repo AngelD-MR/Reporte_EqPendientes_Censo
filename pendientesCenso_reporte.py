@@ -5,39 +5,60 @@ import pandas as pd
 st.set_page_config(page_title="Reporte Pendientes de Censo", layout="wide")
 st.title("📋 Reporte de Clientes - Pendientes de Censo")
 
-# Carga y limpieza de datos
+# Cargar datos
 @st.cache_data
 def load_data():
     df = pd.read_csv("pendientesCenso.csv", encoding="utf-8")
-    # Asegurarnos de que 'Serie' sea string y quitar espacios
     df["Serie"] = df["Serie"].astype(str).str.strip()
     return df
 
-df = load_data()
+df_original = load_data()
 
-# Sidebar de filtros
+# Sidebar: botón para reiniciar filtros
 st.sidebar.header("🔍 Filtros")
-subregiones = st.sidebar.multiselect("Sub-Región", df["Sub-Región"].dropna().unique())
-locaciones  = st.sidebar.multiselect("Locación Comercial", df["Locación Comercial"].dropna().unique())
-mesas       = st.sidebar.multiselect("Mesa Comercial", df["Mesa Comercial"].dropna().unique())
-rutas       = st.sidebar.multiselect("Ruta", df["Ruta"].dropna().unique())
+reset = st.sidebar.button("🔄 Resetear Filtros")
 
-# Aplicar filtros
-df_filtrado = df.copy()
-if subregiones:
-    df_filtrado = df_filtrado[df_filtrado["Sub-Región"].isin(subregiones)]
-if locaciones:
-    df_filtrado = df_filtrado[df_filtrado["Locación Comercial"].isin(locaciones)]
-if mesas:
-    df_filtrado = df_filtrado[df_filtrado["Mesa Comercial"].isin(mesas)]
-if rutas:
-    df_filtrado = df_filtrado[df_filtrado["Ruta"].isin(rutas)]
+# Si se presiona el botón, no se guarda ninguna selección previa
+if reset:
+    subregiones_seleccionadas = []
+    locaciones_seleccionadas = []
+    mesas_seleccionadas = []
+    rutas_seleccionadas = []
+else:
+    # Filtros dependientes (encadenados)
+    subregiones_seleccionadas = st.sidebar.multiselect(
+        "Sub-Región", df_original["Sub-Región"].dropna().unique()
+    )
+
+    df_filtrado = df_original.copy()
+    if subregiones_seleccionadas:
+        df_filtrado = df_filtrado[df_filtrado["Sub-Región"].isin(subregiones_seleccionadas)]
+
+    locaciones_seleccionadas = st.sidebar.multiselect(
+        "Locación Comercial", df_filtrado["Locación Comercial"].dropna().unique()
+    )
+    if locaciones_seleccionadas:
+        df_filtrado = df_filtrado[df_filtrado["Locación Comercial"].isin(locaciones_seleccionadas)]
+
+    mesas_seleccionadas = st.sidebar.multiselect(
+        "Mesa Comercial", df_filtrado["Mesa Comercial"].dropna().unique()
+    )
+    if mesas_seleccionadas:
+        df_filtrado = df_filtrado[df_filtrado["Mesa Comercial"].isin(mesas_seleccionadas)]
+
+    rutas_seleccionadas = st.sidebar.multiselect(
+        "Ruta", df_filtrado["Ruta"].dropna().unique()
+    )
+    if rutas_seleccionadas:
+        df_filtrado = df_filtrado[df_filtrado["Ruta"].isin(rutas_seleccionadas)]
+else:
+    df_filtrado = df_original.copy()
 
 # Mostrar resultados
 st.markdown("### Resultados Filtrados")
 st.dataframe(df_filtrado, use_container_width=True)
 
-# Botón para descargar
+# Descargar como CSV
 csv_bytes = df_filtrado.to_csv(index=False).encode("utf-8")
 st.download_button(
     label="⬇️ Descargar CSV filtrado",
