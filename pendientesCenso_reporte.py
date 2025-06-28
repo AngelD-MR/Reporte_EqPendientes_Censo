@@ -12,8 +12,6 @@ def load_data():
 df = load_data()
 
 # Normalizar nombres de columnas (elimina espacios, baja a minúsculas, reemplaza tildes)
-df["Serie"] = df["Serie"].astype(str).str.strip()
-
 
 # Filtros desde la barra lateral
 st.sidebar.header("🔍 Filtros")
