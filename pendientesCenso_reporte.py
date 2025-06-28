@@ -11,9 +11,9 @@ def load_data():
 df = load_data()
 
 st.sidebar.header("🔍 Filtros")
-subregiones = st.sidebar.multiselect("Subregión", df["subregión"].unique())
+subregiones = st.sidebar.multiselect("Sub-región", df["subregión"].unique())
 locaciones = st.sidebar.multiselect("Locación Comercial", df["locación comercial"].unique())
-mesas = st.sidebar.multiselect("Mesa Comercial", df["mesa comercial"].unique())
+mesas = st.sidebar.multiselect("Mesa Comercial", df["Mesa Comercial"].unique())
 rutas = st.sidebar.multiselect("Ruta", df["ruta"].unique())
 
 df_filtrado = df.copy()
@@ -30,4 +30,4 @@ st.markdown("### 📋 Resultados Filtrados")
 st.dataframe(df_filtrado, use_container_width=True)
 
 csv = df_filtrado.to_csv(index=False).encode("utf-8")
-st.download_button("⬇️ Descargar resultados filtrados", csv, "resultados_filtrados.csv", "text/csv")
+st.download_button("⬇️ Descargar resultados filtrados", csv, "PendientesCenso_filtrados.csv", "text/csv")
