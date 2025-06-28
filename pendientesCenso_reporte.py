@@ -12,8 +12,8 @@ def load_data():
 df = load_data()
 
 # Normalizar nombres de columnas (elimina espacios, baja a minúsculas, reemplaza tildes)
+df["Serie"] = df["Serie"].astype(str).str.strip()
 df.columns = df.columns.str.strip().str.lower().str.replace(" ", "").str.replace("-", "")
-df["serie"] = df["serie"].astype(str).str.strip()
 # Filtros desde la barra lateral
 st.sidebar.header("🔍 Filtros")
 subregiones = st.sidebar.multiselect("Sub-Región", df["sub_región"].unique())
