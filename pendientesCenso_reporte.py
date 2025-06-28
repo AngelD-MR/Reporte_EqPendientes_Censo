@@ -16,8 +16,8 @@ df_original = load_data()
 
 # Sidebar de filtros
 st.sidebar.header("🔍 Filtros")
-if st.sidebar.button("🔄 Resetear filtros"):
-    st.experimental_rerun()  # Reinicia la app para limpiar selección
+#if st.sidebar.button("🔄 Resetear filtros"):
+    #st.experimental_rerun()  # Reinicia la app para limpiar selección
 
 # Filtro 1: Sub-Región
 subregiones = st.sidebar.multiselect(
