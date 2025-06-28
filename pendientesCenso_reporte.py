@@ -6,7 +6,7 @@ st.title("📊 Reporte de Equipos pendientes de censo")
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("pendientes_censo.csv", encoding="utf-8")
+    return pd.read_csv("pendientesCenso.csv", encoding="utf-8")
 
 df = load_data()
 
