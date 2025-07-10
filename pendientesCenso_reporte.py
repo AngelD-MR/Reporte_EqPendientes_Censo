@@ -3,7 +3,7 @@ import pandas as pd
 
 # Configuración de la página
 st.set_page_config(page_title="Reporte Pendientes de Censo", layout="wide")
-st.title("📋 Reporte de Clientes - Pendientes de Censo")
+st.title("📋 Reporte de EDF's - Pendientes de Censo")
 
 # Cargar datos
 @st.cache_data
