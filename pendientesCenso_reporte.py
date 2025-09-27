@@ -58,15 +58,26 @@ rutas = st.sidebar.multiselect(
 if rutas:
     df_filtrado = df_filtrado[df_filtrado["Ruta"].isin(rutas)]
 
+
 # Mostrar resultados
-st.markdown("### 📊 Resultados Filtrados")
+st.markdown("### 📊 Resultados")
+
+# Layout con columnas para el label y el botón
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    st.markdown(f"**Cantidad:** {len(df_filtrado)} registros")
+
+with col2:
+    csv = df_filtrado.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        "⬇️ Descargar CSV filtrado",
+        csv,
+        "pendientes_filtrados.csv",
+        "text/csv"
+    )
+
+# Mostrar la tabla
 st.dataframe(df_filtrado, use_container_width=True)
 
-# Descargar CSV filtrado
-csv = df_filtrado.to_csv(index=False).encode("utf-8")
-st.download_button(
-    "⬇️ Descargar CSV filtrado",
-    csv,
-    "pendientes_filtrados.csv",
-    "text/csv"
-)
+
