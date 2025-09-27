@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import xlsxwriter
 from io import BytesIO
 
 # Configuración de la página
@@ -69,11 +70,11 @@ col1, col2 = st.columns([3, 1])
 with col1:
     st.markdown(f"**Cantidad de pendientes:** {len(df_filtrado)} ")
 
-
 with col2:
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df_filtrado.to_excel(writer, index=False, sheet_name='Pendientes')
+        writer.save()
     excel_data = output.getvalue()
 
     st.download_button(
@@ -84,8 +85,10 @@ with col2:
     )
 
 
+
 # Mostrar la tabla
 st.dataframe(df_filtrado, use_container_width=True)
+
 
 
 
