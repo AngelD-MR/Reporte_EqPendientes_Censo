@@ -72,9 +72,8 @@ with col1:
 
 with col2:
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df_filtrado.to_excel(writer, index=False, sheet_name='Pendientes')
-        writer.save()
     excel_data = output.getvalue()
 
     st.download_button(
@@ -84,8 +83,10 @@ with col2:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
+
 # Mostrar la tabla
 st.dataframe(df_filtrado, use_container_width=True)
+
 
 
 
