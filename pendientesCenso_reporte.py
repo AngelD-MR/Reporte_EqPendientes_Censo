@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from io import BytesIO
 
 # Configuración de la página
 st.set_page_config(page_title="Reporte Pendientes de Censo", layout="wide")
@@ -66,15 +67,21 @@ st.markdown("### 📊 Resultados")
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.markdown(f"**Cantidad:** {len(df_filtrado)} registros")
+    st.markdown(f"**Cantidad de pendientes:** {len(df_filtrado)} ")
+
 
 with col2:
-    csv = df_filtrado.to_csv(index=False).encode("utf-8")
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df_filtrado.to_excel(writer, index=False, sheet_name='Pendientes')
+        writer.save()
+    excel_data = output.getvalue()
+
     st.download_button(
-        "⬇️ Descargar CSV filtrado",
-        csv,
-        "pendientes_filtrados.csv",
-        "text/csv"
+        label="📥 Descargar Excel",
+        data=excel_data,
+        file_name="pendientes_censo.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
 # Mostrar la tabla
